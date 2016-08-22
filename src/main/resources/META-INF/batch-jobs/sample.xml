@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job id="sample" version="1.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee">
+  <step id="start">
+    <chunk item-count="1"> <!-- actual chunking is done through the reader/rest call -->
+      <reader ref="userReader">
+        <properties>
+          <property name="base" value="#{jobParameters['base']}" />
+        </properties>
+      </reader>
+      <processor ref="futureDecoratorProcessor">
+        <properties>
+          <property name="ref" value="userProcessor" />
+          <property name="collection" value="true" />
+        </properties>
+      </processor>
+      <writer ref="flatteningCollectionWriter">
+        <properties>
+          <property name="ref" value="loginWriter" />
+          <property name="waitTimeout" value="60000" />
+        </properties>
+      </writer>
+    </chunk>
+  </step>
+</job>
